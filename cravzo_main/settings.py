@@ -67,6 +67,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "accounts.context_processors.get_vendor",
+                "accounts.context_processors.get_google_api",
             ],
         },
     },
@@ -146,6 +147,8 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+GOOGLE_API_KEY = 'AIzaSyD9R0dFy-x5GBArPCerrl_LIbgemNOVxaI'
 
 
 # Email configuration
