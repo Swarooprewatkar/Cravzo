@@ -68,7 +68,7 @@ def registerVendor(request):
             
             # Email Verification
             mail_subject = 'Please activate your account.'
-            email_tempalte = 'ccounts/emails/account_verification_email.html'
+            email_tempalte = 'accounts/emails/account_verification_email.html'
             send_verification_email(request,user,mail_subject,email_tempalte)
             
             vendor = v_form.save(commit=False)
