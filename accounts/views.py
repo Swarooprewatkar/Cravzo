@@ -9,6 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from vendor.models import Vendor
+from django.template.defaultfilters import slugify
 
 def check_role_vendor(user):
     if user.role == 1:
@@ -25,7 +26,7 @@ def check_role_customer(user):
 def registerUser(request):
     if request.user.is_authenticated:
         messages.warning(request,"You are already logged in!")
-        return redirect('dashboard')
+        return redirect('myAccount')
     elif request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -37,8 +38,8 @@ def registerUser(request):
             
             # Email Verification
             mail_subject = 'Please activate your account.'
-            email_tempalte = 'ccounts/emails/account_verification_email.html'
-            send_verification_email(request,user)
+            email_tempalte = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request,user,mail_subject, email_tempalte)
             
             messages.success(request, "Your account has been registered successfully.")
             return redirect('registerUser')
@@ -52,7 +53,7 @@ def registerUser(request):
 def registerVendor(request):
     if request.user.is_authenticated:
         messages.warning(request,"You are already logged in!")
-        return redirect('dashboard')
+        return redirect('myAccount')
     elif request.method == 'POST':
         form = UserForm(request.POST)
         v_form = VendorForm(request.POST, request.FILES)
@@ -73,6 +74,8 @@ def registerVendor(request):
             
             vendor = v_form.save(commit=False)
             vendor.user = user
+            vendor_name = v_form.cleaned_data['vendor_name']
+            vendor.vendor_slug = slugify(vendor_name)+ '-'+ str(user.id)
             user_profile = UserProfile.objects.get(user=user)
             vendor.user_profile = user_profile
             vendor.save()
