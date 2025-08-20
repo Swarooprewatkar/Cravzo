@@ -160,7 +160,7 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
 
-GOOGLE_API_KEY = 'AIzaSyD9R0dFy-x5GBArPCerrl_LIbgemNOVxaI'
+GOOGLE_API_KEY = config('KEY')
 
 
 # Email configuration
